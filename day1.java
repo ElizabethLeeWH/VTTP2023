@@ -2,45 +2,63 @@ import java.util.ArrayList;
 import java.util.Scanner; //import the scanner class
 
 public class day1 {
-    /**
-     * @param args
-     */
     public static void main(String[] args){
 
-        Scanner item = new Scanner(System.in);   
-        ArrayList<String> myShoppingCart = new ArrayList<String>();
-        String prompt = item.next();
-        
         System.out.println("Welcome to your shopping cart");
+        ArrayList<String> myShoppingCart = new ArrayList<String>();
 
-        switch(prompt.trim().toLowerCase()){
+        boolean proceed = true;
+
+        while (proceed){
+            String userInput = System.console().readLine("What would you like to do?" + '\n');
+            Scanner input = new Scanner(userInput);
+            String prompt = input.next().trim().toLowerCase();
+            String item = "";
+            if (input.hasNextLine()){
+                item = new String(input.nextLine().toLowerCase());
+            }
+
+            switch(prompt){
             case "list":
-                while (!myShoppingCart.isEmpty()){
-                    for (String element : myShoppingCart){
-                        System.out.println(element);                        
-                    }
-
-                    if (myShoppingCart.isEmpty()){
-                        System.out.println("Your cart is empty");
-                        break;
-                    }
-                    
+                if (myShoppingCart.isEmpty()){
+                    System.out.println("Your cart is empty.");                   
                 }
-
-        }
-
-        
-
-
-        // boolean isUnique = true;
-        //     for (String i: myShoppingCart){
-        //         if (input.equals(myShoppingCart.get()){
-        //             isUnique = false;
-        //         }
-        //     }
-        //     if (isUnique == true){
-        //         myShoppingCart.add(input);
-        //     }
-    
+                else {
+                    int size = myShoppingCart.size();
+                    for (int i=0; i<size; i++){
+                        System.out.println(i+1 + ". " + myShoppingCart.get(i));                        
+                    }
+                }                
+                break;
+            case "add":
+                // ArrayList<String> itemArray = new ArrayList<String>();
+                String[] itemToBeInArray = item.split(", ");
+                for (String elements: itemToBeInArray){
+                    String inputItems = new String(elements.trim());
+                
+                    if (!myShoppingCart.contains(inputItems)){
+                    myShoppingCart.add(inputItems);
+                    System.out.println(inputItems + " has been added.");
+                    } else {
+                    System.out.println("Oops "+ inputItems + " is already in cart!");
+                    }
+                }
+                break;
+            case "delete":
+                int itemIndex = Integer.parseInt(item) -1;
+                if (myShoppingCart.size() < itemIndex){
+                    System.out.println("Incorrect item index.");
+                } else {
+                    myShoppingCart.remove(itemIndex);
+                }                  
+                break;
+            case "quit":
+                input.close();
+                return;
+            default:
+                System.out.println("Prompt not recognised.");
+            }
+            input.close();        
+        }       
     }
 }
