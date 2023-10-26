@@ -45,11 +45,11 @@ public class day1 {
                 }
                 break;
             case "delete":
-                int itemIndex = Integer.parseInt(item) -1;
-                if (myShoppingCart.size() < itemIndex){
-                    System.out.println("Incorrect item index.");
+                int itemIndex = Integer.parseInt(item.trim()) -1;
+                if (itemIndex < myShoppingCart.size()){
+                    myShoppingCart.remove(itemIndex);                    
                 } else {
-                    myShoppingCart.remove(itemIndex);
+                    System.out.println("Incorrect item index.");
                 }                  
                 break;
             case "quit":
