@@ -1,4 +1,11 @@
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner; //import the scanner class
 
 public class day1 {
@@ -19,15 +26,47 @@ public class day1 {
             }
 
             switch(prompt){
+            // case "load":
+            //     FileInputStream fileStream = new FileInputStream("./shoppingCart/src/" + terms[1] + ".cart");
+            //     ObjectInputStream is = new ObjectInputStream(fileStream);
+            case "login":
+                try(FileInputStream fis = new FileInputStream("-/shoppingCart/" + item + "cart.txt")){
+                    FileReader file = new FileReader("cart.txt");
+                    BufferedReader bf = new BufferedReader(file);
+                    String line = bf.readLine();
+                    List<String> listOfString = new ArrayList<String>(); 
+                    while (line != null){
+                        myShoppingCart.add(line);
+                        line = bf.readLine();
+                    }
+                    System.out.println(myShoppingCart);;
+
+                    // for (String i: )
+
+                } catch(IOException) {
+                    FileOutputStream fos = new FileOutputStream("-/shoppingCart/" + item + "cart.txt")
+                }
+                break;
+            case "user":
+
+            case "save":
+                
+                             
             case "list":
                 if (myShoppingCart.isEmpty()){
                     System.out.println("Your cart is empty.");                   
                 }
                 else {
-                    int size = myShoppingCart.size();
+                    //this method generates a lot of garbage and is inefficient
+                    int size = myShoppingCart.size();                    
                     for (int i=0; i<size; i++){
                         System.out.println(i+1 + ". " + myShoppingCart.get(i));                        
                     }
+                    //this method is better
+                    // for (String item: myShoppingCart){
+                    //     int i = ;
+                    //     System.out.println("%d, %s%n", (i+1), item);
+                    // }
                 }                
                 break;
             case "add":
@@ -45,11 +84,11 @@ public class day1 {
                 }
                 break;
             case "delete":
-                int itemIndex = Integer.parseInt(item) -1;
-                if (myShoppingCart.size() < itemIndex){
-                    System.out.println("Incorrect item index.");
+                int itemIndex = Integer.parseInt(item.trim()) -1;
+                if ( itemIndex < myShoppingCart.size()){
+                    myShoppingCart.remove(itemIndex);                    
                 } else {
-                    myShoppingCart.remove(itemIndex);
+                    System.out.println("Incorrect item index.");
                 }                  
                 break;
             case "quit":
