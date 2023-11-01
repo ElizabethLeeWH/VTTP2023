@@ -1,9 +1,13 @@
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.ObjectInputStream;
+import java.io.InputStreamReader;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner; //import the scanner class
@@ -15,6 +19,19 @@ public class day1 {
         ArrayList<String> myShoppingCart = new ArrayList<String>();
 
         boolean proceed = true;
+
+        Path currentDir = Paths.get("");
+        String currAbsolutePathString = currentDir.toAbsolutePath().toString();
+        System.out.println("Current absolute path is - " + currAbsolutePathString);
+        File f = new File(currAbsolutePathString + "/shoppingCart");
+        if (f.mkdir()){
+                System.out.format("Directory %s has been created!\n", f.getAbsolutePath());
+            } else if (f.isDirectory()) {
+                System.out.format("Directory %s has already been created!\n", f.getAbsolutePath());
+            } else {
+                System.out.format("Directory %s could not be created!\n", f.getAbsolutePath());
+            }
+        System.out.println(System.getProperty("user.dir"));
 
         while (proceed){
             String userInput = System.console().readLine("What would you like to do?" + '\n');
@@ -30,8 +47,8 @@ public class day1 {
             //     FileInputStream fileStream = new FileInputStream("./shoppingCart/src/" + terms[1] + ".cart");
             //     ObjectInputStream is = new ObjectInputStream(fileStream);
             case "login":
-                try(FileInputStream fis = new FileInputStream("-/shoppingCart/" + item + "cart.txt")){
-                    FileReader file = new FileReader("cart.txt");
+                try(FileInputStream fis = new FileInputStream(f + "/" + item.trim() + "cart.txt")){
+                    InputStreamReader file = new InputStreamReader(fis);
                     BufferedReader bf = new BufferedReader(file);
                     String line = bf.readLine();
                     List<String> listOfString = new ArrayList<String>(); 
@@ -39,17 +56,22 @@ public class day1 {
                         myShoppingCart.add(line);
                         line = bf.readLine();
                     }
-                    System.out.println(myShoppingCart);;
+                    // for (String i : myShoppingCart){
+                    //     int i = 0;
+                    //     System.out.println("%d, %s%n", (i+1), line);
+                    // }
+                    System.out.println(item + "your cart contains the following items:" + myShoppingCart);
 
-                    // for (String i: )
-
-                } catch(IOException) {
-                    FileOutputStream fos = new FileOutputStream("-/shoppingCart/" + item + "cart.txt")
+                } catch(FileNotFoundException ex) {
+                    System.out.println("File not found");
+                    // FileOutputStream fos = new FileOutputStream("-/shoppingCart/" + item + "cart.txt");
+                } catch (IOException ex) {
+                    System.out.println("IO Exception");
                 }
                 break;
-            case "user":
+            // case "user":
 
-            case "save":
+            // case "save":
                 
                              
             case "list":
