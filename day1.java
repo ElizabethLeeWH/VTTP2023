@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -13,7 +14,7 @@ import java.util.List;
 import java.util.Scanner; //import the scanner class
 
 public class day1 {
-    public static void main(String[] args){
+    public static void main(String[] args) throws IOException{
 
         System.out.println("Welcome to your shopping cart");
         ArrayList<String> myShoppingCart = new ArrayList<String>();
@@ -31,7 +32,7 @@ public class day1 {
             } else {
                 System.out.format("Directory %s could not be created!\n", f.getAbsolutePath());
             }
-        System.out.println(System.getProperty("user.dir"));
+        // System.out.println(System.getProperty("user.dir"));
 
         while (proceed){
             String userInput = System.console().readLine("What would you like to do?" + '\n');
@@ -52,24 +53,32 @@ public class day1 {
                     BufferedReader bf = new BufferedReader(file);
                     String line = bf.readLine();
                     List<String> listOfString = new ArrayList<String>(); 
+                    
                     while (line != null){
                         myShoppingCart.add(line);
-                        line = bf.readLine();
+                        line = bf.readLine();                        
                     }
-                    // for (String i : myShoppingCart){
-                    //     int i = 0;
-                    //     System.out.println("%d, %s%n", (i+1), line);
-                    // }
-                    System.out.println(item + "your cart contains the following items:" + myShoppingCart);
-
+                    
+                    System.out.println(item.trim() + ", your cart contains the following items:");
+                    
+                    int i = 1;
+                    for (String n : myShoppingCart){                        
+                        System.out.format("%d. %s%n", i++, n);
+                    }                    
                 } catch(FileNotFoundException ex) {
-                    System.out.println("File not found");
-                    // FileOutputStream fos = new FileOutputStream("-/shoppingCart/" + item + "cart.txt");
+                    System.out.println("Shared cart used");
+                    File myObj = new File(f + "/cartdb.txt");
+                    if (myObj.createNewFile()) {
+                        System.out.println("File created: " + myObj.getName());
+                    } else {
+                        continue;
+                    }
                 } catch (IOException ex) {
                     System.out.println("IO Exception");
                 }
                 break;
             // case "user":
+            //     String 
 
             // case "save":
                 
